@@ -18,7 +18,7 @@ async def on_message(message):
     king_id = message.guild.owner_id
     if king_id == message.author.id:
         await message.add_reaction(emoji)
-        sleep(180)
+        time.sleep(180)
 
 
 bot.run(token)
