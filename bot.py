@@ -4,7 +4,7 @@ from discord.ext import commands
 
 token = os.getenv('KING_TOKEN')
 
-reaction_counter = 0 
+reaction_counters = {}
 every_num_messages = 5
 
 # id of user to be crowned 
@@ -18,12 +18,16 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    global reaction_counter
+    global reaction_counters
     king_id = message.guild.owner_id
     if king_id == message.author.id:
-        if reaction_counter % every_num_messages == 0:
+        if king_id not in reaction_counters:
+            reaction_counters[king_id] = 0
+        if reaction_counters[king_id] == 0:
             await message.add_reaction(emoji)
-        reaction_counter += 1
+        reaction_counters[king_id] += 1
+        if reaction_counters[king_id] == every_num_messages:
+            reaction_counters[king_id] = 0
 
 
 bot.run(token)
